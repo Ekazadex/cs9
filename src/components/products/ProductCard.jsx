@@ -1,57 +1,58 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import Card from '../common/Card';
-import Button from '../common/Button';
 import { FiShoppingCart, FiEye } from 'react-icons/fi';
 
 const ProductCard = ({ product }) => {
-  // If image URL is not provided, use a placeholder
-  const imageUrl = product.image || `https://source.unsplash.com/random/300x200/?product-${product.id}`;
-  
   return (
-    <Card className="h-full flex flex-col">
-      <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-        <img 
-          src={imageUrl}
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+      <div className="relative pb-[75%]">
+        <img
+          src={product.image || `https://via.placeholder.com/300x200?text=${product.name}`}
           alt={product.name}
-          className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-300"
+          className="absolute top-0 left-0 w-full h-full object-cover"
         />
       </div>
       
-      <div className="p-4 flex-grow">
-        <div className="flex justify-between items-start">
-          <h3 className="text-lg font-medium text-gray-900 truncate">{product.name}</h3>
-          <span className="bg-primary-100 text-primary-800 px-2 py-1 text-xs font-medium rounded-full">
-            ${product.price?.toFixed(2) || '0.00'}
+      <div className="p-4">
+        <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">
+          {product.name}
+        </h3>
+        
+        <p className="text-sm text-gray-500 mb-2 line-clamp-2">
+          {product.description}
+        </p>
+        
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-lg font-bold text-primary-600">
+            ${product.price.toFixed(2)}
+          </span>
+          <span className={`text-sm px-2 py-1 rounded-full ${
+            product.stock > 10 
+              ? 'bg-green-100 text-green-800'
+              : 'bg-yellow-100 text-yellow-800'
+          }`}>
+            {product.stock} left
           </span>
         </div>
         
-        <p className="mt-1 text-sm text-gray-500 line-clamp-2">
-          {product.description || 'No description available'}
-        </p>
-        
-        <div className="mt-2 text-xs text-gray-500">
-          {product.store_name && (
-            <span className="flex items-center">
-              <span className="mr-1">•</span> {product.store_name}
-            </span>
-          )}
+        <div className="flex gap-2">
+          <button
+            className="flex-1 bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center gap-2"
+            disabled={product.stock === 0}
+          >
+            <FiShoppingCart />
+            Add to Cart
+          </button>
+          
+          <Link
+            to={`/products/${product.id}`}
+            className="p-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+          >
+            <FiEye size={20} />
+          </Link>
         </div>
       </div>
-      
-      <div className="p-4 pt-0 mt-auto flex space-x-2">
-        <Button
-          variant="primary"
-          className="flex-1 flex items-center justify-center space-x-2"
-        >
-          <FiShoppingCart className="text-white" />
-          <span>Add to Cart</span>
-        </Button>
-        
-        <Link to={`/products/${product.id}`} className="btn btn-outline flex items-center justify-center">
-          <FiEye />
-        </Link>
-      </div>
-    </Card>
+    </div>
   );
 };
 

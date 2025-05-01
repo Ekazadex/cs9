@@ -1,19 +1,18 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
-// Create axios instance with base URL
 const api = axios.create({
-  baseURL: '/api', // This will be proxied to http://localhost:3000 by Vite
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Add a request interceptor to include auth token if available
 api.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (user && user.token) {
-      config.headers.Authorization = `Bearer ${user.token}`;
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`; // Make sure your backend expects this format
     }
     return config;
   },
@@ -22,18 +21,21 @@ api.interceptors.request.use(
   }
 );
 
-// Add a response interceptor to handle errors
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    // Handle 401 Unauthorized errors by logging out
-    if (error.response && error.response.status === 401) {
+    // Handle specific error cases
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
       localStorage.removeItem('user');
-      // Reload the page to reset the app state
       window.location.href = '/auth';
+      toast.error('Session expired. Please login again.');
     }
+    
+    // Show error message from backend if available
+    const errorMessage = error.response?.data?.message || 'An error occurred';
+    toast.error(errorMessage);
+    
     return Promise.reject(error);
   }
 );

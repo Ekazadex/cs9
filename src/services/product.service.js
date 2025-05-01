@@ -1,17 +1,11 @@
 import api from './api';
 
 export const getAllProducts = () => {
-  return api.get('/item');
+  return api.get('/products');  // Changed from '/item' to '/products'
 };
 
 export const getProductById = (id) => {
-  return api.get(`/item/${id}`);
+  return api.get(`/products/${id}`);  // Changed from '/item/:id' to '/products/:id'
 };
 
-export const getStores = () => {
-  return api.get('/store');
-};
-
-export const createTransaction = (data) => {
-  return api.post('/transaction', data);
-};
+// Add any other product-related API calls

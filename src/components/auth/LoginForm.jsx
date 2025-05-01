@@ -80,7 +80,7 @@ const LoginForm = () => {
           value={formData.email}
           onChange={handleChange}
           error={errors.email}
-          className="pl-10"
+          className="pl-10 bg-white text-gray-900"
           required
         />
       </div>
@@ -96,7 +96,7 @@ const LoginForm = () => {
           value={formData.password}
           onChange={handleChange}
           error={errors.password}
-          className="pl-10"
+          className="pl-10 bg-white text-gray-900"
           required
         />
       </div>

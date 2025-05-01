@@ -9,9 +9,9 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    // Check if user is logged in by retrieving from local storage
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
+    const token = localStorage.getItem('token');
+    if (storedUser && token) {
       setUser(JSON.parse(storedUser));
     }
     setLoading(false);
@@ -23,9 +23,10 @@ export const AuthProvider = ({ children }) => {
       const response = await login(email, password);
       
       if (response.data) {
-        const userData = response.data;
+        const { user: userData, token } = response.data;
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('token', token);
         toast.success('Login successful!');
         return { success: true };
       }
@@ -47,8 +48,9 @@ export const AuthProvider = ({ children }) => {
         return { success: true };
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration failed');
-      return { success: false, message: error.response?.data?.message || 'Registration failed' };
+      const errorMessage = error.response?.data?.message || 'Registration failed';
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
     } finally {
       setLoading(false);
     }
@@ -57,6 +59,7 @@ export const AuthProvider = ({ children }) => {
   const handleLogout = () => {
     logout();
     setUser(null);
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
     toast.success('Logged out successfully');
   };

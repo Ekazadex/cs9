@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAllProducts, getProductById } from '../services/products.service';
+import { getAllProducts, getProductById } from '../services/product.service';
 import toast from 'react-hot-toast';
 
 export const useProducts = () => {

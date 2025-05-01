@@ -1,16 +1,21 @@
 import api from './api';
 
 export const login = (email, password) => {
-  return api.post('/user/login', { email, password });
+  return api.post('/auth/login', { email, password });
 };
 
 export const register = (name, email, password) => {
-  return api.post('/user/register', { name, email, password });
+  return api.post('/auth/register', { 
+    name, 
+    email, 
+    password,
+    role: 'user' // Add role for backend compatibility
+  });
 };
 
 export const logout = () => {
-  // For a JWT-based auth, we just need to remove the token
-  // No need for a server call unless you're managing sessions server-side
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
 };
 
 export const getCurrentUser = () => {

@@ -71,6 +71,24 @@ button:focus-visible {
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html, body {
+    @apply w-full m-0 p-0 overflow-x-hidden;
+  }
+
+  body {
+    @apply min-h-screen bg-gradient-to-br from-blue-50 to-white text-gray-900;
+  }
+  
+  #root {
+    @apply min-h-screen flex flex-col w-full;
+  }
+  
+  main {
+    @apply flex-grow w-full;
+  }
+}
+
 :root {
   --primary-gradient: linear-gradient(to right, #0ea5e9, #a21caf);
   --background-gradient: linear-gradient(to bottom right, #f0f9ff, #fdf4ff);
@@ -80,6 +98,20 @@ body {
   @apply bg-gray-50 text-gray-900 font-sans antialiased;
   background-image: var(--background-gradient);
   background-attachment: fixed;
+}
+
+@layer base {
+  body {
+    @apply min-h-screen bg-gradient-to-br from-blue-50 to-white text-gray-900;
+  }
+  
+  #root {
+    @apply min-h-screen flex flex-col;
+  }
+  
+  main {
+    @apply flex-grow;
+  }
 }
 
 @layer components {
@@ -104,7 +136,7 @@ body {
   
   /* Custom input styles */
   .input {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300;
+    @apply w-full px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300;
   }
   
   /* Card styles */
